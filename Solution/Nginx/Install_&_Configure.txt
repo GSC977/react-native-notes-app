@@ -1,0 +1,21 @@
+sudo yum install -y nginx
+sudo systemctl start nginx
+sudo systemctl enable nginx
+
+sudo vim /etc/nginx/nginx.conf
+
+Add 
+server {
+    listen 80;
+    server_name your-domain-or-ip;
+
+    location / {
+        proxy_pass http://localhost:3000;  # Or wherever your app is running
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+
